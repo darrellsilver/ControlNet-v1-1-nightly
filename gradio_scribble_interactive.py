@@ -79,11 +79,10 @@ with block:
         with gr.Column():
             canvas_width = gr.Slider(label="Canvas Width", minimum=256, maximum=1024, value=512, step=1)
             canvas_height = gr.Slider(label="Canvas Height", minimum=256, maximum=1024, value=512, step=1)
-            create_button = gr.Button(label="Start", value='Open drawing canvas!')
-            input_image = gr.Image(source='upload', type='numpy', tool='sketch')
-            gr.Markdown(value='Do not forget to change your brush width to make it thinner. '
-                              'Just click on the small pencil icon in the upper right corner of the above block.')
-            create_button.click(fn=create_canvas, inputs=[canvas_width, canvas_height], outputs=[input_image])
+            # create_button = gr.Button(label="Start", value='Open drawing canvas!')
+            # input_image = gr.Image(source='upload', type='numpy', tool='sketch')
+            input_image = gr.Sketchpad(tool='sketch')
+            # create_button.click(fn=create_canvas, inputs=[canvas_width, canvas_height], outputs=[input_image])
             prompt = gr.Textbox(label="Prompt")
             run_button = gr.Button(label="Run")
             num_samples = gr.Slider(label="Images", minimum=1, maximum=12, value=1, step=1)
@@ -103,6 +102,5 @@ with block:
     run_button.click(fn=process, inputs=ips, outputs=[result_gallery])
 
 
-print("Hellooooo, world!")
 
 block.launch(server_name='0.0.0.0')
