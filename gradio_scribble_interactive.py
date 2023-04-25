@@ -25,7 +25,7 @@ ddim_sampler = DDIMSampler(model)
 
 def process(input_image, prompt, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta):
     with torch.no_grad():
-        img = resize_image(HWC3(input_image[:, :, 0]), image_resolution)
+        img = resize_image(HWC3(input_image[:, :]), image_resolution)
         H, W, C = img.shape
 
         detected_map = np.zeros_like(img, dtype=np.uint8)
@@ -77,11 +77,11 @@ with block:
         gr.Markdown("## Control Stable Diffusion with Interactive Scribbles")
     with gr.Row():
         with gr.Column():
-            canvas_width = gr.Slider(label="Canvas Width", minimum=256, maximum=1024, value=512, step=1)
-            canvas_height = gr.Slider(label="Canvas Height", minimum=256, maximum=1024, value=512, step=1)
+            # canvas_width = gr.Slider(label="Canvas Width", minimum=256, maximum=1024, value=512, step=1)
+            # canvas_height = gr.Slider(label="Canvas Height", minimum=256, maximum=1024, value=512, step=1)
             # create_button = gr.Button(label="Start", value='Open drawing canvas!')
             # input_image = gr.Image(source='upload', type='numpy', tool='sketch')
-            input_image = gr.Sketchpad(tool='sketch', shape=(512, 512, 3))
+            input_image = gr.Sketchpad(tool='sketch', shape=(512, 512))
             # create_button.click(fn=create_canvas, inputs=[canvas_width, canvas_height], outputs=[input_image])
             prompt = gr.Textbox(label="Prompt")
             run_button = gr.Button(label="Run")
