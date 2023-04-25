@@ -25,7 +25,7 @@ ddim_sampler = DDIMSampler(model)
 
 def process(input_image, prompt, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta):
     with torch.no_grad():
-        img = resize_image(HWC3(input_image['mask'][:, :, 0]), image_resolution)
+        img = resize_image(HWC3(input_image[:, :, 0]), image_resolution)
         H, W, C = img.shape
 
         detected_map = np.zeros_like(img, dtype=np.uint8)
