@@ -74,7 +74,7 @@ def create_canvas(w, h):
 block = gr.Blocks().queue()
 with block:
     with gr.Row():
-        input_image = gr.Sketchpad(tool='sketch', brush_radius=2)
+        input_image = gr.Sketchpad(label="...", tool='sketch', brush_radius=2)
     with gr.Column():
         prompt = gr.Textbox(label="Style")
         run_button = gr.Button(value="Wave")
