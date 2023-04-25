@@ -77,7 +77,7 @@ with block:
         gr.Markdown("## Control Stable Diffusion with Interactive Scribbles")
     with gr.Row():
         with gr.Column():
-            input_image = gr.Sketchpad(tool='sketch', shape=(512, 512))
+            input_image = gr.Sketchpad(tool='sketch', shape=(1024, 1024))
             prompt = gr.Textbox(label="Style")
             run_button = gr.Button(label="Wave")
             with gr.Accordion("Advanced options", open=False):
@@ -91,8 +91,8 @@ with block:
                 a_prompt = gr.Textbox(label="Added Prompt", value='best quality')
                 n_prompt = gr.Textbox(label="Negative Prompt", value='lowres, bad anatomy, bad hands, cropped, worst quality')
                 seed = gr.Slider(label="Seed", minimum=-1, maximum=2147483647, step=1, value=12345)
-        with gr.Column():
-            result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
+    with gr.Column():
+        result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
     ips = [input_image, prompt, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta]
     run_button.click(fn=process, inputs=ips, outputs=[result_gallery])
 
