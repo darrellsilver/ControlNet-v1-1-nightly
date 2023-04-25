@@ -103,4 +103,6 @@ with block:
     run_button.click(fn=process, inputs=ips, outputs=[result_gallery])
 
 
+print("Hellooooo, world!")
+
 block.launch(server_name='0.0.0.0')
