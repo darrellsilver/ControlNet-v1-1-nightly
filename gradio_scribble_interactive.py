@@ -81,7 +81,7 @@ with block:
             canvas_height = gr.Slider(label="Canvas Height", minimum=256, maximum=1024, value=512, step=1)
             # create_button = gr.Button(label="Start", value='Open drawing canvas!')
             # input_image = gr.Image(source='upload', type='numpy', tool='sketch')
-            input_image = gr.Sketchpad(tool='sketch')
+            input_image = gr.Sketchpad(tool='sketch', shape=(512, 512, 3))
             # create_button.click(fn=create_canvas, inputs=[canvas_width, canvas_height], outputs=[input_image])
             prompt = gr.Textbox(label="Prompt")
             run_button = gr.Button(label="Run")
