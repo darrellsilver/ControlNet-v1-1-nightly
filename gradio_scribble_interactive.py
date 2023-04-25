@@ -75,7 +75,11 @@ block = gr.Blocks().queue()
 with block:
     with gr.Row():
         input_image = gr.Sketchpad(label="", tool='sketch')
-        input_image.update(brush_radius=2.0)
+        print(input_image.get_config())
+
+        input_image.brush_radius=2.0
+
+        print(input_image.get_config())
     with gr.Column():
         prompt = gr.Textbox(label="Style")
         run_button = gr.Button(value="Wave")
