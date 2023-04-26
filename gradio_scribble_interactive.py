@@ -74,7 +74,7 @@ def create_canvas(w, h):
 block = gr.Blocks().queue()
 with block:
     with gr.Row():
-        input_image = gr.Sketchpad(label=" ", tool='sketch', brush_radius=5.0)
+        input_image = gr.Sketchpad(label=" ", tool='sketch', shape=(256, 256), brush_radius=2.0)
         input_image.style(height=900)
     with gr.Column():
         prompt = gr.Textbox(label="Style")
