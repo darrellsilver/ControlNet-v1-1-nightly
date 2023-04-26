@@ -74,15 +74,15 @@ def create_canvas(w, h):
 block = gr.Blocks().queue()
 with block:
     with gr.Row():
-        input_image = gr.Sketchpad(label=" ", tool='sketch', shape=(512, 512), brush_radius=10.0)
-        input_image.style(height=1000)
+        input_image = gr.Sketchpad(label=" ", tool='sketch', brush_radius=5.0)
+        input_image.style(height=900)
     with gr.Column():
         prompt = gr.Textbox(label="Style")
         run_button = gr.Button(value="Wave")
     with gr.Column():
         result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
     with gr.Row():
-        with gr.Accordion("Advanced options", open=False):
+        with gr.Accordion("Advanced", open=False):
             num_samples = gr.Slider(label="Images", minimum=1, maximum=12, value=1, step=1)
             image_resolution = gr.Slider(label="Image Resolution", minimum=256, maximum=768, value=512, step=64)
             strength = gr.Slider(label="Control Strength", minimum=0.0, maximum=2.0, value=1.0, step=0.01)
