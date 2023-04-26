@@ -23,7 +23,7 @@ model = model.cuda()
 ddim_sampler = DDIMSampler(model)
 
 
-def process(input_image, render_as, style, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta):
+def process(input_image, render_as, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta):
     with torch.no_grad():
         img = resize_image(HWC3(input_image[:, :]), image_resolution)
         H, W, C = img.shape
@@ -42,7 +42,7 @@ def process(input_image, render_as, style, a_prompt, n_prompt, num_samples, imag
         if config.save_memory:
             model.low_vram_shift(is_diffusing=False)
 
-        prompt = render_as + ', ' + style
+        prompt = render_as + ', ' + 'wooden'
 
         cond = {"c_concat": [control], "c_crossattn": [model.get_learned_conditioning([prompt + ', ' + a_prompt] * num_samples)]}
         un_cond = {"c_concat": None if guess_mode else [control], "c_crossattn": [model.get_learned_conditioning([n_prompt] * num_samples)]}
@@ -78,7 +78,6 @@ with block:
         render_as = gr.Dropdown(label="It's a", 
                              choices=['Coffee Table', 'Dining Table', 'Chair', 'Bench', 'Stool', 'End table', 'Light'],
                              value='Coffee Table')
-        style = "wooden"
         run_button = gr.Button(value="Render")
     with gr.Column():
         result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
@@ -94,7 +93,7 @@ with block:
             a_prompt = gr.Textbox(label="Added Prompt", value='best quality')
             n_prompt = gr.Textbox(label="Negative Prompt", value='lowres, bad anatomy, bad hands, cropped, worst quality')
             seed = gr.Slider(label="Seed", minimum=-1, maximum=2147483647, step=1, value=12345)
-    ips = [input_image, render_as, style, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta]
+    ips = [input_image, render_as, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta]
     run_button.click(fn=process, inputs=ips, outputs=[result_gallery])
 
 
