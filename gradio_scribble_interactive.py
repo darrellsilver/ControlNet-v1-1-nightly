@@ -23,7 +23,7 @@ model = model.cuda()
 ddim_sampler = DDIMSampler(model)
 
 
-def process(input_image, prompt, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta):
+def process(input_image, render_as, style, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta):
     with torch.no_grad():
         img = resize_image(HWC3(input_image[:, :]), image_resolution)
         H, W, C = img.shape
@@ -41,6 +41,8 @@ def process(input_image, prompt, a_prompt, n_prompt, num_samples, image_resoluti
 
         if config.save_memory:
             model.low_vram_shift(is_diffusing=False)
+
+        prompt = render_as + ', ' + style
 
         cond = {"c_concat": [control], "c_crossattn": [model.get_learned_conditioning([prompt + ', ' + a_prompt] * num_samples)]}
         un_cond = {"c_concat": None if guess_mode else [control], "c_crossattn": [model.get_learned_conditioning([n_prompt] * num_samples)]}
@@ -67,24 +69,23 @@ def process(input_image, prompt, a_prompt, n_prompt, num_samples, image_resoluti
     return [detected_map] + results
 
 
-def create_canvas(w, h):
-    return np.zeros(shape=(h, w, 3), dtype=np.uint8) + 255
-
-
 block = gr.Blocks().queue()
 with block:
     with gr.Row():
         input_image = gr.Sketchpad(label=" ", tool='sketch', shape=(256, 256), brush_radius=2.0)
         input_image.style(height=900)
     with gr.Column():
-        prompt = gr.Textbox(label="Style")
-        run_button = gr.Button(value="Wave")
+        render_as = gr.Dropdown(label="Render as", 
+                             choices=['Coffee Table', 'Dining Table', 'Chair', 'Bench', 'Stool', 'End table', 'Light'])
+        style = gr.Dropdown(label="Style",
+                            choices=['Modern', 'Traditional', 'Rustic', 'Industrial', 'Mid-Century Modern', 'Farmhouse', 'Scandinavian', 'Coastal', 'Glam', 'Bohemian', 'Contemporary', 'Transitional', 'Surprise me!'])
+        run_button = gr.Button(value="Draw")
     with gr.Column():
         result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
     with gr.Row():
         with gr.Accordion("Advanced", open=False):
             num_samples = gr.Slider(label="Images", minimum=1, maximum=12, value=1, step=1)
-            image_resolution = gr.Slider(label="Image Resolution", minimum=256, maximum=768, value=512, step=64)
+            image_resolution = gr.Slider(label="Image Resolution", minimum=256, maximum=768, value=380, step=64)
             strength = gr.Slider(label="Control Strength", minimum=0.0, maximum=2.0, value=1.0, step=0.01)
             guess_mode = gr.Checkbox(label='Guess Mode', value=False)
             ddim_steps = gr.Slider(label="Steps", minimum=1, maximum=100, value=10, step=1)
@@ -93,7 +94,7 @@ with block:
             a_prompt = gr.Textbox(label="Added Prompt", value='best quality')
             n_prompt = gr.Textbox(label="Negative Prompt", value='lowres, bad anatomy, bad hands, cropped, worst quality')
             seed = gr.Slider(label="Seed", minimum=-1, maximum=2147483647, step=1, value=12345)
-    ips = [input_image, prompt, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta]
+    ips = [input_image, render_as, style, a_prompt, n_prompt, num_samples, image_resolution, ddim_steps, guess_mode, strength, scale, seed, eta]
     run_button.click(fn=process, inputs=ips, outputs=[result_gallery])
 
 
