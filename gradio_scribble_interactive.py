@@ -66,7 +66,7 @@ def process(input_image, render_as, style, a_prompt, n_prompt, num_samples, imag
         x_samples = (einops.rearrange(x_samples, 'b c h w -> b h w c') * 127.5 + 127.5).cpu().numpy().clip(0, 255).astype(np.uint8)
 
         results = [x_samples[i] for i in range(num_samples)]
-    return [detected_map] + results
+    return results
 
 
 block = gr.Blocks().queue()
@@ -75,16 +75,16 @@ with block:
         input_image = gr.Sketchpad(label=" ", tool='sketch', shape=(256, 256), brush_radius=2.0)
         input_image.style(height=900)
     with gr.Column():
-        render_as = gr.Dropdown(label="Render as", 
-                             choices=['Coffee Table', 'Dining Table', 'Chair', 'Bench', 'Stool', 'End table', 'Light'])
-        style = gr.Dropdown(label="Style",
-                            choices=['Modern', 'Traditional', 'Rustic', 'Industrial', 'Mid-Century Modern', 'Farmhouse', 'Scandinavian', 'Coastal', 'Glam', 'Bohemian', 'Contemporary', 'Transitional', 'Surprise me!'])
-        run_button = gr.Button(value="Draw")
+        render_as = gr.Dropdown(label="It's a", 
+                             choices=['Coffee Table', 'Dining Table', 'Chair', 'Bench', 'Stool', 'End table', 'Light'],
+                             value='Coffee Table')
+        style = "wooden"
+        run_button = gr.Button(value="Render")
     with gr.Column():
         result_gallery = gr.Gallery(label='Output', show_label=False, elem_id="gallery").style(grid=2, height='auto')
     with gr.Row():
         with gr.Accordion("Advanced", open=False):
-            num_samples = gr.Slider(label="Images", minimum=1, maximum=12, value=1, step=1)
+            num_samples = gr.Slider(label="Images", minimum=1, maximum=12, value=3, step=1)
             image_resolution = gr.Slider(label="Image Resolution", minimum=256, maximum=768, value=380, step=64)
             strength = gr.Slider(label="Control Strength", minimum=0.0, maximum=2.0, value=1.0, step=0.01)
             guess_mode = gr.Checkbox(label='Guess Mode', value=False)
