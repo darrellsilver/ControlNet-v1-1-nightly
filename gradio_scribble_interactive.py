@@ -76,7 +76,8 @@ with block:
         input_image.style(height=900)
     with gr.Column():
         render_as = gr.Dropdown(label="It's a", 
-                             choices=['Coffee Table', 'Dining Table', 'Chair', 'Bench', 'Stool', 'End table', 'Light'],
+                             choices=['Coffee Table', 'Dining Table', 'Chair', 'Bench', 'Stool', 'End table', 
+                                      'Light', 'Dresser', 'Dresser with mirror on top'],
                              value='Coffee Table')
         run_button = gr.Button(value="Render")
     with gr.Column():
