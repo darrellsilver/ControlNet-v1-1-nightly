@@ -72,7 +72,7 @@ def process(input_image, render_as, a_prompt, n_prompt, num_samples, image_resol
 block = gr.Blocks().queue()
 with block:
     with gr.Row():
-        input_image = gr.Sketchpad(label=" ", tool='sketch', shape=(256, 256), brush_radius=2.0)
+        input_image = gr.Sketchpad(label=" ", tool='color-sketch', shape=(256, 256), brush_radius=2.0)
         input_image.style(height=900)
     with gr.Column():
         render_as = gr.Dropdown(label="It's a", 
