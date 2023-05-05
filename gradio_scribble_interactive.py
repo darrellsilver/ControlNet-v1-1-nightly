@@ -66,6 +66,7 @@ def process(input_image, render_as, a_prompt, n_prompt, num_samples, image_resol
         x_samples = (einops.rearrange(x_samples, 'b c h w -> b h w c') * 127.5 + 127.5).cpu().numpy().clip(0, 255).astype(np.uint8)
 
         results = [x_samples[i] for i in range(num_samples)]
+        input_image.value = x_samples[0]
     return results
 
 
