@@ -69,7 +69,7 @@ def process(input_image, render_as, a_prompt, n_prompt, num_samples, image_resol
     return results
 
 
-block = gr.Blocks().queue()
+block = gr.Blocks(title="Draft Something Great").queue()
 with block:
     with gr.Row():
         input_image = gr.Sketchpad(label=" ", tool='color-sketch', shape=(256, 256), brush_radius=2.0)
